@@ -61,7 +61,7 @@ class SoldStocksDataTable extends DataTable
             Column::make('name')->title('Product Name'),
             Column::make('sold_by')->title('Sold By'),
             Column::make('quantity')->title('Quantity Sold'),
-            Column::make('sold_price')->title('Selling Price (AED)'),
+            Column::make('sold_price')->title('Sold Price (AED)'),
         ];
 
         if (Admin::query()->findOrFail(Auth::id())->isSuperAdmin()) {

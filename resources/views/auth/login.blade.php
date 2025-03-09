@@ -76,7 +76,7 @@
                     <!-- /Logo -->
                     <h4 class="mb-2 text-center">
                         <div class="rounded">
-                            <img alt="logo" height="150" src="{{asset('assets/images/Color Logo in White BG.svg')}}">
+                            <img alt="logo" height="150" src="{{asset('assets/images/croped_logo.png')}}">
                         </div>
                     </h4>
                     <p class="mb-4">Please sign-in to your account and start the adventure</p>

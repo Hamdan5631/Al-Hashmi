@@ -97,4 +97,8 @@
 
     </script>
 @endpush
-
+<style>
+    .modal-open .select2-container {
+        z-index: 0!important;
+    }
+</style>
