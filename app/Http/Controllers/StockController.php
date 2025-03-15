@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\DataTables\StocksDataTable;
 use App\Enums\ProductStatusEnum;
 use App\Http\Requests\StoreProductRequest;
+use App\Models\Admin;
 use App\Models\Product;
 use App\Models\SoldProduct;
 use Illuminate\Http\JsonResponse;
@@ -23,8 +24,14 @@ class StockController extends Controller
         return $dataTable->render('pages.products.index');
     }
 
-    public function create(): View
+    public function create(): View|RedirectResponse
     {
+        $admin = Admin::find(Auth::id());
+
+        if ($admin->isEmployee()) {
+            return abort(403);
+        }
+
         return view('pages.products.create');
     }
 
@@ -61,8 +68,14 @@ class StockController extends Controller
             ->with('success', 'Stock Added Successfully');
     }
 
-    public function edit(Product $stock): View
+    public function edit(Product $stock): View|RedirectResponse
     {
+        $admin = Admin::find(Auth::id());
+
+        if($admin->isEmployee()){
+            return abort(403);
+        }
+
         return view('pages.products.edit', compact('stock'));
     }
 
@@ -117,7 +130,7 @@ class StockController extends Controller
             return redirect()->back()->withErrors(['quantity' => 'Invalid quantity. Please enter a positive value.'])->withInput();
         }
 
-        if( $request->get('selling_price') < $product->sold_price) {
+        if ($request->get('selling_price') < $product->sold_price) {
             return redirect()->back()->withErrors(['selling_price' => 'Selling price must be greater than product selling price.'])->withInput();
         }
 

@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\DataTables\EmployeeDataTable;
 use App\DataTables\UserBiddingsDataTable;
 use App\DataTables\UserOrdersDataTable;
-use App\DataTables\EmployeeDataTable;
 use App\Enums\Admin\AdminRoles;
 use App\Enums\Users\UserStatusEnum;
 use App\Models\Admin;
@@ -20,11 +20,23 @@ class EmployeesController extends Controller
 {
     public function index(EmployeeDataTable $dataTable)
     {
+        $admin = Admin::find(Auth::id());
+
+        if ($admin->isEmployee()) {
+            return abort(403);
+        }
+
         return $dataTable->render('pages.employees.index');
     }
 
     public function create(): View
     {
+        $admin = Admin::find(Auth::id());
+
+        if ($admin->isEmployee()) {
+            return abort(403);
+        }
+
         return view('pages.employees.create');
     }
 
