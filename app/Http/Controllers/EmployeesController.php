@@ -39,6 +39,19 @@ class EmployeesController extends Controller
         $admin->password = Hash::make('al-hashmi@123');
         $admin->save();
 
+        if ($request->hasFile('image')) {
+            $image = $request->file('image');
+
+            $originalName = preg_replace('/[^\w.-]/', '_', $image->getClientOriginalName());
+            $imageName = time() . '_' . $originalName;
+
+            $path = $image->storeAs('profile-images', $imageName, 'public');
+
+            $admin->profile_image = $path;
+            $admin->save();
+        }
+
+
         return redirect()->route('employees.index')->with('success', 'Employee has been created.');
     }
 

@@ -11,6 +11,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\View\View;
 use Spatie\MediaLibrary\MediaCollections\Exceptions\FileDoesNotExist;
 use Spatie\MediaLibrary\MediaCollections\Exceptions\FileIsTooBig;
@@ -42,12 +43,19 @@ class StockController extends Controller
         $product->status = $request->get('status');
         $product->save();
 
-        if ($request->hasFile('images')) {
-            $images = $request->file('images');
-            foreach ($images as $image) {
-                $product->addMedia($image)->toMediaCollection('product-images');
-            }
+        if ($request->hasFile('image')) {
+            $image = $request->file('image');
+
+            $originalName = preg_replace('/[^\w.-]/', '_', $image->getClientOriginalName());
+            $imageName = time() . '_' . $originalName;
+
+            $path = $image->storeAs('product-images', $imageName, 'public');
+
+            $product->image = $path;
+            $product->save();
         }
+
+
         return redirect()
             ->route('stocks.index')
             ->with('success', 'Stock Added Successfully');
@@ -72,11 +80,20 @@ class StockController extends Controller
         $stock->status = $request->get('status');
         $stock->save();
 
-        if ($request->hasFile('images')) {
-            $images = $request->file('images');
-            foreach ($images as $image) {
-                $stock->addMedia($image)->toMediaCollection('product-images');
+        if ($request->hasFile('image')) {
+            $image = $request->file('image');
+
+            $originalName = preg_replace('/[^\w.-]/', '_', $image->getClientOriginalName());
+            $imageName = time() . '_' . $originalName;
+
+            if ($stock->image && Storage::disk('public')->exists($stock->image)) {
+                Storage::disk('public')->delete($stock->image);
             }
+
+            $path = $image->storeAs('product-images', $imageName, 'public');
+
+            $stock->image = $path;
+            $stock->save();
         }
 
         return redirect()

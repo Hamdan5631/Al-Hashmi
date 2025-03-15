@@ -3,7 +3,7 @@
 @section('header')
     <div class="d-flex justify-content-between">
         <div>
-            <h1 class="page-title">Edit Product</h1>
+            <h1 class="page-title">Edit Stock</h1>
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item"><a href="{{route('stocks.index')}}">Products/ {{$stock->name}}</a>
@@ -43,10 +43,10 @@
                     </div>
 
                     <div class="row mb-3">
-                        <label class="col-sm-2 col-form-label" for="basic-default-name">Images <span
-                                style="opacity: 70%">(multiple images)</span>*</label>
+                        <label class="col-sm-2 col-form-label" for="basic-default-name">Image<span
+                                style="opacity: 70%"></span>*</label>
                         <div class="col-sm-10">
-                            <input type="file" name="images[]" class="form-control" multiple>
+                            <input type="file" name="images" class="form-control" multiple>
                         </div>
                     </div>
 

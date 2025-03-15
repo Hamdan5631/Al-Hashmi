@@ -43,6 +43,13 @@
                         </div>
                     </div>
 
+                    <div class="row mb-3">
+                        <label class="col-sm-2 col-form-label" for="basic-default-name">Profile Image</label>
+                        <div class="col-sm-10">
+                            <input type="file" class="form-control" name="image" id="image">
+                        </div>
+                    </div>
+
                     <div class="row justify-content-end">
                         <div class="col-sm-10">
                             <button type="submit" class="btn btn-primary">Save</button>

@@ -2,6 +2,7 @@
 
 namespace App\DataTables;
 
+use App\Enums\Admin\AdminRoles;
 use App\Enums\Users\UserStatusEnum;
 use App\Models\Admin;
 use App\Models\Employee;
@@ -30,12 +31,12 @@ class EmployeeDataTable extends DataTable
                     });
                 }
             })
-
             ->editColumn('profile_image', function ($query) {
                 $url = $query->profile_image_url;
-                return "<div class='' style='width: 35px;height: 35px'>
+                return "<a href='{$url}' target='_blank'>
+            <div class='' style='width: 35px;height: 35px'>
                         <img class='rounded-circle w-100 h-100' style='height: 100%;width: 100%;object-fit: fill' src=$url alt='$query->id'>
-                        </div>";
+                        </div></a>";
             })
             ->addColumn('mobile', function ($query) {
                 return $query->mobile_country_code . " " . $query->mobile;
@@ -59,7 +60,7 @@ class EmployeeDataTable extends DataTable
 
     public function query(Admin $model): QueryBuilder
     {
-        return $model->newQuery()->latest();
+        return $model->newQuery()->where('role', '!=', AdminRoles::SUPER_ADMIN->value)->latest();
     }
 
     public function html(): HtmlBuilder

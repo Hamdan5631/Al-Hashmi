@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Storage;
 use Laravel\Sanctum\HasApiTokens;
 
 /**
@@ -68,5 +69,10 @@ class Admin extends Authenticatable
     public function isEmployee(): bool
     {
         return $this->role == AdminRoles::EMPLOYEE->value;
+    }
+
+    public function getProfileImageUrlAttribute()
+    {
+        return $this->profile_image ? Storage::url($this->profile_image) : asset('assets/images/avatar.png');
     }
 }

@@ -27,8 +27,13 @@ class StocksDataTable extends DataTable
                     $query->where('status', request('filter.status'));
                 }
             })
-            ->addColumn('image', function (Product $product) {
-                return $product->image_url;
+            ->editColumn('image', function ($query) {
+                $url = $query->image_url;
+                return "<a href='{$url}' target='_blank'>
+<div class='' style='width: 35px;height: 35px'>
+                        <img class='rounded-circle w-100 h-100' style='height: 100%;width: 100%;object-fit: fill' src=$url alt='$query->id'>
+                        </div>
+                        </a>";
             })
             ->addColumn('action', 'pages.products.action')
             ->editColumn('status', function ($query) {
@@ -52,7 +57,7 @@ class StocksDataTable extends DataTable
             ->editColumn('sold_price', function (Product $product) {
                 return number_format($product->sold_price);
             })
-            ->rawColumns(['action', 'status'])
+            ->rawColumns(['action', 'status','image'])
             ->setRowId('id');
     }
 

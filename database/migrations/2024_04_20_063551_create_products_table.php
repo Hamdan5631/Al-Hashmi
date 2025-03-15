@@ -14,7 +14,7 @@ return new class extends Migration {
             $table->integer('quantity')->nullable();
             $table->double('actual_price')->nullable();
             $table->double('sold_price')->nullable();
-            $table->double('image')->nullable();
+            $table->string('image')->nullable();
             $table->string('status')->comment('ACTIVE,INACTIVE,SOLD');
             $table->timestamps();
             $table->softDeletes();

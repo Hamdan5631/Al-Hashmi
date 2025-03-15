@@ -14,7 +14,7 @@
 
     <div class="card">
         <div class="card-body bg-grey-100">
-            <form id="form-users" class="form-inline mb-0">
+            <form id="form-employees" class="form-inline mb-0">
                 <div class="form-group col-12 align-items-center d-flex flex-wrap">
                     <div class="col-3">
                         <label class="sr-only" for="inputUnlabelUsername">Search</label>

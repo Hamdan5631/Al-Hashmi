@@ -11,7 +11,7 @@
 @section('content')
     <div class="card">
         <div class="card-body bg-grey-100">
-            <form id="form-users" class="form-inline mb-0">
+            <form id="form-sold-stocks" class="form-inline mb-0">
                 <div class="form-group col-12 align-items-center d-flex">
                     <div class="col-3">
                         <label class="sr-only" for="inputUnlabelUsername">Search</label>
@@ -47,7 +47,7 @@
                 };
             });
 
-            $('#form-employees').submit(function (e) {
+            $('#form-sold-stocks').submit(function (e) {
                 e.preventDefault();
                 $table.DataTable().draw();
             });
