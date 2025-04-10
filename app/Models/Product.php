@@ -143,9 +143,9 @@ class Product extends Model implements HasMedia
         return collect($this->getMedia('product-images'))->pluck('original_url');
     }
 
-    public function getImageUrlAttribute()
+    public function getImageUrlAttribute(): string
     {
-        return $this->image ? asset('storage/' . $this->image) : asset('default-product.png');
+        return asset('storage/' . $this->image);
     }
 
 }
