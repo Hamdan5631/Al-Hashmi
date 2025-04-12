@@ -44,8 +44,8 @@ class StockController extends Controller
         $product = new Product();
         $product->name = $request->get('name');
         $product->description = $request->get('description');
-        $product->actual_price = $request->get('actual_price');
-        $product->sold_price = $request->get('sold_price');
+        $product->actual_price = $request->get('actual_price') ?? null;
+        $product->sold_price = $request->get('sold_price') ?? null;
         $product->quantity = $request->get('quantity');
         $product->status = $request->get('status');
         $product->save();
@@ -87,8 +87,8 @@ class StockController extends Controller
     {
         $stock->name = $request->get('name');
         $stock->description = $request->get('description');
-        $stock->actual_price = $request->get('actual_price');
-        $stock->sold_price = $request->get('sold_price');
+        $stock->actual_price = $request->get('actual_price') ?? null;
+        $stock->sold_price = $request->get('sold_price') ?? null;
         $stock->quantity = $request->get('quantity');
         $stock->status = $request->get('status');
         $stock->save();
@@ -156,4 +156,5 @@ class StockController extends Controller
 
         return redirect()->back()->with('success', 'Product Sold Successfully');
     }
+
 }

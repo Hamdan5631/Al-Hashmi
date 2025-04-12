@@ -86,14 +86,47 @@
                 $table.DataTable().draw();
             });
 
+            $table.on('click', '.btn-delete', function (e) {
+                e.preventDefault();
+                const deleteUrl = $(this).data('url');
+
+                alertify.confirm("Confirm Delete",
+                    "Are you sure you want to delete this stock?",
+                    function () {
+                        alertify.error("Delete cancelled");
+                    },
+                    function () {
+                        $.ajax({
+                            url: deleteUrl,
+                            type: 'POST',
+                            data: {
+                                _method: 'DELETE',
+                                _token: '{{ csrf_token() }}'
+                            },
+                            success: function () {
+                                alertify.success("Deleted successfully");
+                                $table.DataTable().ajax.reload(null, false);
+                            },
+                            error: function () {
+                                alertify.error("Delete failed");
+                            }
+                        });
+                    }
+                );
+
+            });
+
+
         });
         $(document).ready(function () {
             $(document).on('click', '.sell-btn', function () {
                 let id = $(this).data('id');
 
                 $('#product_id').val(id);
+
             });
         });
+
 
     </script>
 @endpush

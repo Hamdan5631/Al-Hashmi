@@ -17,8 +17,8 @@ class StoreProductRequest extends FormRequest
         return [
             'name' => 'required|string',
             'description' => 'nullable|string',
-            'actual_price' => 'required|integer',
-            'sold_price' => 'required|integer',
+            'actual_price' => 'nullable|integer',
+            'sold_price' => 'nullable|integer',
         ];
     }
 }

@@ -60,7 +60,7 @@
                     </div>
 
                     <div class="row mb-3">
-                        <label class="col-sm-2 col-form-label" for="basic-default-name">Actual Price*
+                        <label class="col-sm-2 col-form-label" for="basic-default-name">Actual Price
                             <span style="font-size: 11px">(AED)</span></label>
                         <div class="col-sm-10">
                             <input type="number" name="actual_price"
@@ -117,9 +117,6 @@
                         quantity: {
                             required: true,
                             min:1
-                        },
-                        actual_price: {
-                            required: true
                         },
                     }
             })
