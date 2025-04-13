@@ -90,27 +90,30 @@
                 e.preventDefault();
                 const deleteUrl = $(this).data('url');
 
-                alertify.confirm("Confirm Delete",
+                alertify.confirm(
                     "Are you sure you want to delete this stock?",
-                    function () {
-                        alertify.error("Delete cancelled");
-                    },
-                    function () {
-                        $.ajax({
-                            url: deleteUrl,
-                            type: 'POST',
-                            data: {
-                                _method: 'DELETE',
-                                _token: '{{ csrf_token() }}'
-                            },
-                            success: function () {
-                                alertify.success("Deleted successfully");
-                                $table.DataTable().ajax.reload(null, false);
-                            },
-                            error: function () {
-                                alertify.error("Delete failed");
-                            }
-                        });
+                    function (e) {
+                        if (e) {
+                            // User clicked "OK"
+                            $.ajax({
+                                url: deleteUrl,
+                                type: 'POST',
+                                data: {
+                                    _method: 'DELETE',
+                                    _token: '{{ csrf_token() }}'
+                                },
+                                success: function () {
+                                    alertify.success("Deleted successfully");
+                                    $table.DataTable().ajax.reload(null, false);
+                                },
+                                error: function () {
+                                    alertify.error("Delete failed");
+                                }
+                            });
+                        } else {
+                            // User clicked "Cancel"
+                            alertify.error("Delete cancelled");
+                        }
                     }
                 );
 
