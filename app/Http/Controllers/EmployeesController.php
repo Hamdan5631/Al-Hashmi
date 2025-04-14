@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\DataTables\EmployeeDataTable;
+use App\DataTables\SoldStocksDataTable;
 use App\DataTables\UserBiddingsDataTable;
 use App\DataTables\UserOrdersDataTable;
 use App\Enums\Admin\AdminRoles;
@@ -40,6 +41,13 @@ class EmployeesController extends Controller
         return view('pages.employees.create');
     }
 
+    public function show(SoldStocksDataTable $dataTable, Admin $employee)
+    {
+        return $dataTable
+            ->with('id', $employee->id)
+            ->render('pages.employees.show', compact('employee'));
+    }
+
     public function store(Request $request): RedirectResponse
     {
         $admin = new Admin();
@@ -48,7 +56,7 @@ class EmployeesController extends Controller
         $admin->email = $request->input('email');
         $admin->mobile = $request->input('mobile');
         $admin->mobile_country_code = '+971';
-        $admin->password = Hash::make('al-hashmi@123');
+        $admin->password = Hash::make('alhashmi@123');
         $admin->save();
 
         if ($request->hasFile('image')) {

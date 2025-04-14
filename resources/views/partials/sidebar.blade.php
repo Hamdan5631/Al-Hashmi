@@ -40,6 +40,14 @@
                             <div data-i18n="Email">Employees</div>
                         </a>
                     </li>
+                    <li class="menu-item {{  \Illuminate\Support\Facades\Route::is('categories.index','categories.create','categories.edit') ? 'active' : '' }}">
+                        <a
+                            href="{{route('categories.index')}}"
+                            class="menu-link">
+                            <i class="menu-icon tf-icons bx bx-category"></i>
+                            <div data-i18n="Email">Categories</div>
+                        </a>
+                    </li>
                 @endif
                 <li class="menu-item {{  \Illuminate\Support\Facades\Route::is('stocks.index','stocks.show','stocks.create','stocks.edit') ? 'active' : '' }}">
                     <a

@@ -35,6 +35,15 @@
                             @endforeach
                         </select>
                     </div>
+                    <div class="form-group px-3 col-2">
+                        <label class="m-10" for="filter-status">Category</label>
+                        <select class="form-control select2" data-plugin="select2" name="category_id" id="category_id">
+                            <option value="" selected>Choose Category</option>
+                            @foreach($categories as $category)
+                                <option value="{{$category->id}}">{{$category->name}}</option>
+                            @endforeach
+                        </select>
+                    </div>
                     <div class="px-4 pt-4">
                         <button id="btn-filter-admins" type="submit" class="btn btn-primary btn-outline">Search</button>
                         <a id="btn-clear" class="btn btn-primary ml-2 text-white">Clear</a>
@@ -72,6 +81,7 @@
                 data.filter = {
                     q: $('#search').val(),
                     status: $('#filter-status').val(),
+                    category: $('#category_id').val(),
                 };
             });
 
@@ -82,7 +92,8 @@
 
             $('#btn-clear').click(function () {
                 $('#search').val('');
-                $('#filter-status').val('');
+                $('#filter-status').val('').trigger('change');
+                $('#category_id').val('').trigger('change');
                 $table.DataTable().draw();
             });
 
@@ -135,6 +146,6 @@
 @endpush
 <style>
     .modal-open .select2-container {
-        z-index: 0!important;
+        z-index: 0 !important;
     }
 </style>

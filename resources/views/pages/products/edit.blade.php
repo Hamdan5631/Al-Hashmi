@@ -35,6 +35,17 @@
                         </div>
                     </div>
                     <div class="row mb-3">
+                        <label class="col-sm-2 col-form-label" for="basic-default-name">Category*</label>
+                        <div class="col-sm-10">
+                            <select class="form-control select2" data-plugin="select2" name="category_id" id="category_id">
+                                <option value="" selected>Choose Category</option>
+                                @foreach($categories as $category)
+                                    <option @selected($category->id == $stock->category_id) value="{{$category->id}}">{{$category->name}}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
                         <label class="col-sm-2 col-form-label" for="basic-default-name">Description</label>
                         <div class="col-sm-10">
                             <textarea type="text" class="form-control" name="description" id="description"

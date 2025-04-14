@@ -1,6 +1,6 @@
 @php use App\Enums\Users\UserStatusEnum; @endphp
 @extends('layouts.master')
-@section('title', 'Employees')
+@section('title', 'Users')
 @section('header')
     <div class="d-flex justify-content-between">
         <div>
@@ -8,7 +8,7 @@
             <nav aria-label="breadcrumb">
                 <ol class="breadcrumb">
                     <li class="breadcrumb-item"><a href="{{route('employees.index')}}">Users</a></li>
-                    <li class="breadcrumb-item active" aria-current="page">{{$employee->name}}</li>
+                    <li class="breadcrumb-item active" aria-current="page">{{$user->name}}</li>
                 </ol>
             </nav>
             <ul class="nav nav-tabs mb-3 d-flex justify-content-between align-items-center" role="tablist">
@@ -25,11 +25,16 @@
                         <button type="button" class="nav-link" role="tab" data-bs-toggle="tab"
                                 data-bs-target="#navs-orders" aria-controls="navs-orders"
                                 aria-selected="true">
-                            Sold Stocks
+                            Orders
                         </button>
                     </li>
                 </div>
             </ul>
+        </div>
+        <div>
+            <button class="btn btn-primary btn-md" data-bs-toggle="modal" data-bs-target="#addCoin">
+                Add Coins
+            </button>
         </div>
     </div>
 @endsection
@@ -43,10 +48,10 @@
                         <div class="card-body">
                             <div class="user-avatar-section">
                                 <div class=" d-flex align-items-center flex-column">
-                                    <img class="img-fluid rounded my-4" src="{{$employee->profile_image_url}}" height="110"
+                                    <img class="img-fluid rounded my-4" src="{{$user->profile_image_url}}" height="110"
                                          width="110" alt="User avatar">
                                     <div class="user-info text-center">
-                                        <h4 class="mb-2">{{$employee->name}}</h4>
+                                        <h4 class="mb-2">{{$user->name}}</h4>
                                     </div>
                                 </div>
                             </div>
@@ -55,35 +60,62 @@
                                 <ul class="list-unstyled">
                                     <li class="mb-3">
                                         <span class="fw-medium me-2">Name:</span>
-                                        <span>{{$employee->name}}</span>
+                                        <span>{{$user->name}}</span>
                                     </li>
                                     <li class="mb-3">
                                         <span class="fw-medium me-2">Email:</span>
-                                        <span>{{$employee->email}}</span>
+                                        <span>{{$user->email}}</span>
                                     </li>
                                     <li class="mb-3">
                                         <span class="fw-medium me-2">Status:</span>
-                                        @if($employee->status ===UserStatusEnum::Active->value)
+                                        @if($user->status ===UserStatusEnum::Active->value)
                                             <span class="badge bg-label-success">Active</span>
                                         @endif
-                                        @if($employee->status ===UserStatusEnum::Blocked->value)
+                                        @if($user->status ===UserStatusEnum::Blocked->value)
                                             <span class="badge bg-label-danger">Blocked</span>
                                         @endif
-                                        @if($employee->status ===UserStatusEnum::Deleted->value)
+                                        @if($user->status ===UserStatusEnum::Deleted->value)
                                             <span class="badge bg-label-warning">Deleted</span>
                                         @endif
                                     </li>
                                     <li class="mb-3">
                                         <span class="fw-medium me-2">Contact:</span>
-                                        <span>{{$employee->mobile_country_code}} {{$employee->mobile}}</span>
+                                        <span>{{$user->mobile_country_code}} {{$user->mobile}}</span>
                                     </li>
                                     <li class="mb-3">
-                                        <span class="fw-medium me-2">Total Sales (AED):</span>
-                                        <span>{{$employee->totalSales()}}</span>
+                                        <span class="fw-medium me-2">Coin Balance:</span>
+                                        <span>{{$user->coins}} 🪙</span>
                                     </li>
                                 </ul>
 
                             </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-8 order-1 order-md-0">
+                    <div class="card">
+                        <div class="card-body bg-grey-100">
+                            <h5>User Biddings</h5>
+                            <form id="form-users" class="form-inline mb-0">
+                                <div class="form-group col-12 align-items-center d-flex">
+                                    <div class="col-3">
+                                        <label class="sr-only" for="inputUnlabelUsername">Search</label>
+                                        <input id="search" type="text" class="form-control" placeholder="Search..."
+                                               autocomplete="off">
+                                    </div>
+                                    <div class="px-4 pt-4">
+                                        <button id="btn-filter-admins" type="submit"
+                                                class="btn btn-primary btn-outline">
+                                            Search
+                                        </button>
+                                        <a id="btn-clear" class="btn btn-primary ml-2 text-white">Clear</a>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+
+                        <div class="card-body table-responsive">
+                            {!! $dataTable->table(['id' => 'user-biddings-table'], true) !!}
                         </div>
                     </div>
                 </div>
@@ -94,28 +126,28 @@
         <div class="tab-pane fade show " id="navs-orders" role="tabpanel">
             <div class="col-12 order-1 order-md-0">
                 <div class="card">
-                    <h5 class="pb-2 border-bottom mb-4 m-3">Sold Stocks</h5>
+                    <h5 class="pb-2 border-bottom mb-4 m-3">Orders</h5>
                     <div class="card-body info-container table-responsive">
-                        {!! $dataTable->table([
-                            'id' => 'sold-stocks-table',
-                            'style' => 'width: 100%;'
-                        ], true) !!}
+                        {!! $userOrdersDatatable->table(['id' => 'user-orders-table'], true) !!}
                     </div>
                 </div>
             </div>
 
         </div>
     </div>
+    @include('pages.employees._columns._modal.add-coins')
 @endsection
 
 @push('scripts')
     {!! $dataTable->scripts() !!}
+    {!! $userOrdersDatatable->scripts() !!}
+
 @endpush
 
 @push('scripts')
     <script>
         $(function () {
-            let $table = $('#sold-stocks-table');
+            let $table = $('#user-biddings-table');
             $table.on('preXhr.dt', function (e, settings, data) {
                 data.filter = {
                     q: $('#search').val(),

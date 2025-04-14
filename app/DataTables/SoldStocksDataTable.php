@@ -18,10 +18,18 @@ class SoldStocksDataTable extends DataTable
         return (new EloquentDataTable($query))
             ->filter(function (QueryBuilder $query) {
                 if (request()->filled('filter.q')) {
+                    $search = request('filter.q');
+
+                    $query->where(function ($query) use ($search) {
+                        $query->where('selling_price', 'like', '%' . $search . '%')
+                            ->orWhereHas('product', function ($q) use ($search) {
+                                $q->where('name', 'like', '%' . $search . '%');
+                            });
+                    });
+                }
+                if (request()->filled('filter.employee')) {
                     $query->where(function ($query) {
-                        $query->whereHas('product', function ($query) {
-                            $query->where('name', 'like', '%' . request('filter.q') . '%');
-                        });
+                        $query->where('admin_id', request('filter.employee'));
                     });
                 }
             })
@@ -29,7 +37,7 @@ class SoldStocksDataTable extends DataTable
                 return $product?->product?->name;
             })
             ->addColumn('sold_by', function (SoldProduct $product) {
-                return $product?->employee?->name;
+                return '<a href="' . route('employees.show', $product->admin_id) . '">' . optional($product->employee)->name . '</a>';
             })
             ->addColumn('quantity', function (SoldProduct $product) {
                 return $product?->quantity_sold;
@@ -40,7 +48,7 @@ class SoldStocksDataTable extends DataTable
             ->editColumn('sold_price', function (SoldProduct $product) {
                 return number_format($product->selling_price);
             })
-            ->rawColumns(['action', 'status'])
+            ->rawColumns(['action', 'status', 'sold_by', 'name'])
             ->setRowId('id');
     }
 
@@ -73,6 +81,12 @@ class SoldStocksDataTable extends DataTable
 
     public function query(SoldProduct $model): QueryBuilder
     {
+        $employeeId = $this->id;
+
+        if ($employeeId) {
+            return $model->where('admin_id', $employeeId);
+        }
+
         return $model->latest();
     }
 

@@ -29,6 +29,17 @@
                         </div>
                     </div>
                     <div class="row mb-3">
+                        <label class="col-sm-2 col-form-label" for="basic-default-name">Category*</label>
+                        <div class="col-sm-10">
+                            <select class="form-control select2" data-plugin="select2" name="category_id" id="category_id">
+                                <option value="" selected>Choose Category</option>
+                                @foreach($categories as $category)
+                                    <option value="{{$category->id}}">{{$category->name}}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
                         <label class="col-sm-2 col-form-label" for="basic-default-name">Description</label>
                         <div class="col-sm-10">
                             <textarea type="text" class="form-control" name="description" id="description"
@@ -46,7 +57,7 @@
 
                     <div class="row mb-3">
                         <label class="col-sm-2 col-form-label" for="basic-default-name">Quantity
-                            </label>
+                        </label>
                         <div class="col-sm-10">
                             <input type="number" name="quantity" value="{{old('quantity')}}"
                                    class="form-control" placeholder="Enter the quantity">
@@ -65,7 +76,7 @@
                     <div class="row mb-3">
                         <label class="col-sm-2 col-form-label" for="basic-default-name">Selling Price
                             <span style="font-size: 11px">(AED)</span>
-                            </label>
+                        </label>
                         <div class="col-sm-10">
                             <input type="number" name="sold_price" value="{{old('sold_price')}}"
                                    class="form-control" placeholder="Enter the selling price">
@@ -74,13 +85,14 @@
 
                     <div class="row mb-3">
                         <label class="col-sm-2 col-form-label" for="basic-default-name">Status*
-                            </label>
+                        </label>
                         <div class="col-sm-10">
-                           <select class="form-control select2" data-plugin="select2" name="status" id="status">
-                               @foreach(\App\Enums\ProductStatusEnum::cases() as $status)
-                                   <option value="{{$status->value}}">{{\Illuminate\Support\Str::title($status->value)}}</option>
-                               @endforeach
-                           </select>
+                            <select class="form-control select2" data-plugin="select2" name="status" id="status">
+                                @foreach(\App\Enums\ProductStatusEnum::cases() as $status)
+                                    <option
+                                        value="{{$status->value}}">{{\Illuminate\Support\Str::title($status->value)}}</option>
+                                @endforeach
+                            </select>
                         </div>
                     </div>
 

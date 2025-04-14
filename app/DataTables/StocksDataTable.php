@@ -26,6 +26,9 @@ class StocksDataTable extends DataTable
                 if (request()->filled('filter.status')) {
                     $query->where('status', request('filter.status'));
                 }
+                if (request()->filled('filter.category')) {
+                    $query->where('category_id', request('filter.category'));
+                }
             })
             ->editColumn('image', function ($query) {
                 $url = $query->image_url;
@@ -54,6 +57,9 @@ class StocksDataTable extends DataTable
             ->editColumn('actual_price', function (Product $product) {
                 return number_format($product->actual_price);
             })
+            ->editColumn('category_id', function (Product $product) {
+                return $product->category?->name ?? "-";
+            })
             ->editColumn('sold_price', function (Product $product) {
                 return number_format($product->sold_price);
             })
@@ -81,6 +87,7 @@ class StocksDataTable extends DataTable
     {
         $columns = [
             Column::make('name')->title('Product Name'),
+            Column::make('category_id')->title('Category'),
             Column::make('quantity'),
             Column::make('sold_price')->title('Selling Price (AED)'),
             Column::make('image'),

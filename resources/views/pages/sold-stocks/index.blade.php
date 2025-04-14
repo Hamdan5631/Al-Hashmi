@@ -17,6 +17,15 @@
                         <label class="sr-only" for="inputUnlabelUsername">Search</label>
                         <input id="search" type="text" class="form-control" placeholder="Search..." autocomplete="off">
                     </div>
+                    <div class="form-group px-3 col-2">
+                        <label class="m-10" for="filter-status">Employees</label>
+                        <select class="form-control select2" data-plugin="select2" name="employee_id" id="employee_id">
+                            <option value="" selected>Choose Employee</option>
+                            @foreach($employees as $employee)
+                                <option value="{{$employee->id}}">{{$employee->name}}</option>
+                            @endforeach
+                        </select>
+                    </div>
                     <div class="px-4 pt-4">
                         <button id="btn-filter-admins" type="submit" class="btn btn-primary btn-outline">Search</button>
                         <a id="btn-clear" class="btn btn-primary ml-2 text-white">Clear</a>
@@ -43,7 +52,7 @@
             $table.on('preXhr.dt', function (e, settings, data) {
                 data.filter = {
                     q: $('#search').val(),
-                    status: $('#filter-status').val(),
+                    employee: $('#employee_id').val(),
                 };
             });
 
@@ -54,17 +63,10 @@
 
             $('#btn-clear').click(function () {
                 $('#search').val('');
-                $('#filter-status').val('');
+                $('#employee_id').val('').trigger('change');
                 $table.DataTable().draw();
             });
 
-        });
-        $(document).ready(function () {
-            $(document).on('click', '.sell-btn', function () {
-                let id = $(this).data('id');
-
-                $('#product_id').val(id);
-            });
         });
     </script>
 @endpush

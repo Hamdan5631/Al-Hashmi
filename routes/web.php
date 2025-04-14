@@ -40,6 +40,7 @@ Route::middleware('auth:admin')->group(function () {
     Route::resource('employees', EmployeesController::class);
     Route::resource('stocks', StockController::class);
     Route::resource('sold-stocks', SoldStockController::class);
+    Route::resource('categories', \App\Http\Controllers\CategoriesController::class);
     Route::post('sold-product', [StockController::class, 'soldProduct'])->name('sold-product');
 });
 require __DIR__ . '/auth.php';

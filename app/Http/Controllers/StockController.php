@@ -6,6 +6,7 @@ use App\DataTables\StocksDataTable;
 use App\Enums\ProductStatusEnum;
 use App\Http\Requests\StoreProductRequest;
 use App\Models\Admin;
+use App\Models\Category;
 use App\Models\Product;
 use App\Models\SoldProduct;
 use Illuminate\Http\JsonResponse;
@@ -21,7 +22,9 @@ class StockController extends Controller
 {
     public function index(StocksDataTable $dataTable)
     {
-        return $dataTable->render('pages.products.index');
+        $categories = Category::query()->get();
+
+        return $dataTable->render('pages.products.index', compact('categories'));
     }
 
     public function create(): View|RedirectResponse
@@ -32,7 +35,9 @@ class StockController extends Controller
             return abort(403);
         }
 
-        return view('pages.products.create');
+        $categories = Category::query()->get();
+
+        return view('pages.products.create', compact('categories'));
     }
 
     /**
@@ -43,6 +48,7 @@ class StockController extends Controller
     {
         $product = new Product();
         $product->name = $request->get('name');
+        $product->category_id = $request->get('category_id');
         $product->description = $request->get('description');
         $product->actual_price = $request->get('actual_price') ?? null;
         $product->sold_price = $request->get('sold_price') ?? null;
@@ -72,11 +78,12 @@ class StockController extends Controller
     {
         $admin = Admin::find(Auth::id());
 
-        if($admin->isEmployee()){
+        if ($admin->isEmployee()) {
             return abort(403);
         }
+        $categories = Category::query()->get();
 
-        return view('pages.products.edit', compact('stock'));
+        return view('pages.products.edit', compact('stock', 'categories'));
     }
 
     /**
@@ -86,6 +93,7 @@ class StockController extends Controller
     public function update(Request $request, Product $stock): RedirectResponse
     {
         $stock->name = $request->get('name');
+        $stock->category_id = $request->get('category_id');
         $stock->description = $request->get('description');
         $stock->actual_price = $request->get('actual_price') ?? null;
         $stock->sold_price = $request->get('sold_price') ?? null;
@@ -134,18 +142,17 @@ class StockController extends Controller
             return redirect()->back()->withErrors(['selling_price' => 'Selling price must be greater than product selling price.'])->withInput();
         }
 
-        if ($product->quantity <= 0) {
-            $product->status = ProductStatusEnum::OUT_OF_STOCK;
-            $product->save();
-        }
-
         if ($quantityToSell > $product->quantity) {
             return redirect()->back()->with('error', 'Not enough stock available to complete this sale.');
         }
 
-
         $product->quantity -= $quantityToSell;
         $product->save();
+
+        if ($product->quantity <= 0) {
+            $product->status = ProductStatusEnum::OUT_OF_STOCK->value;
+            $product->save();
+        }
 
         $soldProduct = new SoldProduct();
         $soldProduct->admin_id = Auth::id();
