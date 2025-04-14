@@ -9,7 +9,7 @@
     <meta name="viewport" content="initial-scale=1, maximum-scale=1">
     <!-- site metas -->
     <title>Auctopets</title>
-    <link rel="icon" type="image/x-icon" href="{{asset('assets/images/logo.png')}}">
+    <link rel="icon" type="image/x-icon" href="{{asset('assets/images/new-logo.png')}}">
     <meta name="keywords" content="">
     <meta name="description" content="">
     <meta name="author" content="">
@@ -29,7 +29,7 @@
 <body class="main-layout">
 <!-- loader  -->
 <div class="loader_bg" style="background: #8EDCFF">
-    <div class="loader"><img src="{{asset('assets/images/aucto-logo.png')}}" style="object-fit: contain" alt=""/></div>
+    <div class="loader"><img src="{{asset('assets/images/aucto-new-logo.png')}}" style="object-fit: contain" alt=""/></div>
 </div>
 <div id="mySidepanel" class="sidepanel">
     <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">×</a>
