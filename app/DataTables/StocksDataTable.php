@@ -30,14 +30,6 @@ class StocksDataTable extends DataTable
                     $query->where('category_id', request('filter.category'));
                 }
             })
-            ->editColumn('image', function ($query) {
-                $url = $query->image_url;
-                return "<a href='{$url}' target='_blank'>
-<div class='' style='width: 35px;height: 35px'>
-                        <img class='rounded-circle w-100 h-100' style='height: 100%;width: 100%;object-fit: fill' src=$url alt='$query->id'>
-                        </div>
-                        </a>";
-            })
             ->addColumn('action', 'pages.products.action')
             ->editColumn('status', function ($query) {
                 if ($query->status === "ACTIVE") {
@@ -90,7 +82,6 @@ class StocksDataTable extends DataTable
             Column::make('category_id')->title('Category'),
             Column::make('quantity'),
             Column::make('sold_price')->title('Selling Price (AED)'),
-            Column::make('image'),
             Column::make('status'),
         ];
 

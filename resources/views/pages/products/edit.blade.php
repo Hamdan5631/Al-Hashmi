@@ -53,13 +53,13 @@
                         </div>
                     </div>
 
-                    <div class="row mb-3">
-                        <label class="col-sm-2 col-form-label" for="basic-default-name">Image<span
-                                style="opacity: 70%"></span>*</label>
-                        <div class="col-sm-10">
-                            <input type="file" name="images" class="form-control" multiple>
-                        </div>
-                    </div>
+{{--                    <div class="row mb-3">--}}
+{{--                        <label class="col-sm-2 col-form-label" for="basic-default-name">Image<span--}}
+{{--                                style="opacity: 70%"></span>*</label>--}}
+{{--                        <div class="col-sm-10">--}}
+{{--                            <input type="file" name="images" class="form-control" multiple>--}}
+{{--                        </div>--}}
+{{--                    </div>--}}
 
                     <div class="row mb-3">
                         <label class="col-sm-2 col-form-label" for="basic-default-name">Quantity
