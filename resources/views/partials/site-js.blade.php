@@ -33,6 +33,7 @@
 <script src="{{ asset('assets/vendor/ladda/ladda.min.js') }}"></script>
 <script src="{{ asset('assets/vendor/alertify/alertify.js') }}"></script>
 <script src="https://unpkg.com/boxicons@2.1.4/dist/boxicons.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
 <script>
 

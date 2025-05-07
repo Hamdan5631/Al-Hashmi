@@ -67,6 +67,17 @@
                         </a>
                     </li>
                 @endif
+
+                @if($admin->isSuperAdmin())
+                    <li class="menu-item {{  \Illuminate\Support\Facades\Route::is('expenses.index','expenses.show','expenses.create','expenses.edit') ? 'active' : '' }}">
+                        <a
+                            href="{{route('expenses.index')}}"
+                            class="menu-link">
+                            <i class="menu-icon tf-icons bx bx-money"></i>
+                            <div data-i18n="Email">Expenses</div>
+                        </a>
+                    </li>
+                @endif
             </ul>
         </aside>
         <div class="layout-page">

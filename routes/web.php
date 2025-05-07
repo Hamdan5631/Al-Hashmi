@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\BannerController;
+use App\Http\Controllers\ExpenseController;
 use App\Http\Controllers\FaqController;
 use App\Http\Controllers\OrdersController;
 use App\Http\Controllers\PaymentController;
@@ -40,6 +41,7 @@ Route::middleware('auth:admin')->group(function () {
     Route::resource('employees', EmployeesController::class);
     Route::resource('stocks', StockController::class);
     Route::resource('sold-stocks', SoldStockController::class);
+    Route::resource('expenses', ExpenseController::class);
     Route::resource('categories', \App\Http\Controllers\CategoriesController::class);
     Route::post('sold-product', [StockController::class, 'soldProduct'])->name('sold-product');
 });

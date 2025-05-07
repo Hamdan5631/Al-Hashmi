@@ -3,6 +3,22 @@
 @section('content')
     @php
         $admin = \App\Models\Admin::query()->find(\Illuminate\Support\Facades\Auth::id());
+         $monthlyExpenses = \App\Models\Expense::select(
+                DB::raw("SUM(amount) as total"),
+                DB::raw("MONTH(created_at) as month")
+            )
+            ->groupBy(DB::raw("MONTH(created_at)"))
+            ->orderBy('month')
+            ->get();
+
+        $labels = [];
+        $data = [];
+
+        foreach (range(1, 12) as $month) {
+            $labels[] = \Illuminate\Support\Carbon::create()->month($month)->format('F');
+            $expense = $monthlyExpenses->firstWhere('month', $month);
+            $data[] = $expense ? $expense->total : 0;
+        }
     @endphp
 
     <div class="row">
@@ -717,7 +733,46 @@
                 </div>
             </div>
         </div>
+        @if($admin->isSuperAdmin())
+            <div class="col-lg-10 col-md-3 col-6 mb-4 card">
+                <h4 class="mt-4">Monthly Expense</h4>
+                <div class="card-body">
+                    <canvas id="expenseChart" width="400" height="150"></canvas>
 
+                </div>
+
+            </div>
+        @endif
 
     </div>
 @endsection
+@push('scripts')
+    <script>
+        const ctx = document.getElementById('expenseChart').getContext('2d');
+        const expenseChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: {!! json_encode($labels) !!},
+                datasets: [{
+                    label: 'Expenses (in AED)',
+                    data: {!! json_encode($data) !!},
+                    backgroundColor: 'rgba(54, 162, 235, 0.6)',
+                    borderColor: 'rgba(54, 162, 235, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            callback: function (value) {
+                                return value;
+                            }
+                        }
+                    }
+                }
+            }
+        });
+    </script>
+@endpush
