@@ -60,7 +60,36 @@
                 $('#employee_id').val('').trigger('change');
                 $table.DataTable().draw();
             });
+            $table.on('click', '.btn-delete', function (e) {
+                e.preventDefault();
+                const deleteUrl = $(this).data('url');
 
+                alertify.confirm(
+                    "Are you sure you want to delete this expense?",
+                    function (e) {
+                        if (e) {
+                            $.ajax({
+                                url: deleteUrl,
+                                type: 'POST',
+                                data: {
+                                    _method: 'DELETE',
+                                    _token: '{{ csrf_token() }}'
+                                },
+                                success: function () {
+                                    alertify.success("Deleted successfully");
+                                    $table.DataTable().ajax.reload(null, false);
+                                },
+                                error: function () {
+                                    alertify.error("Delete failed");
+                                }
+                            });
+                        } else {
+                            alertify.error("Delete cancelled");
+                        }
+                    }
+                );
+
+            });
         });
     </script>
 @endpush

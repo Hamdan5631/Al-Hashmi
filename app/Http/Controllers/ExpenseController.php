@@ -78,4 +78,11 @@ class ExpenseController extends Controller
 
         return redirect()->route('expenses.index')->with('success', 'Expense updated successfully.');
     }
+
+    public function destroy(Expense $expense): RedirectResponse
+    {
+        $expense->delete();
+
+        return redirect()->route('expenses.index')->with('success', 'Expense deleted successfully.');
+    }
 }
