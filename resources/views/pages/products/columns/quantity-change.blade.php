@@ -10,11 +10,16 @@
                     @csrf
                     <div class="mb-3">
                         <label for="quantity" class="col-form-label">Quantity*</label>
-                        <input type="number" min="1" class="form-control" id="quantity" name="quantity"  value="{{old('quantity')}}">
+                        <input type="number" min="1" class="form-control" id="quantity"
+                               placeholder="Enter quantity"
+                               name="quantity"  value="{{old('quantity')}}">
                     </div>
                     <div class="mb-3">
                         <label for="selling_price" class="col-form-label">Selling price (AED)*</label>
-                        <input type="number" class="form-control" id="selling_price" name="selling_price"
+                        <input type="number" class="form-control" id="selling_price"
+                               placeholder="Enter selling price"
+
+                               name="selling_price"
                         value="{{old('selling_price')}}">
                     </div>
                     <input type="hidden" name="id" id="product_id">
@@ -34,14 +39,35 @@
             $('.quantity-change-form').validate({
                 rules: {
                     quantity: {
-                        required: true
+                        required: true,
+                        min:1
                     },
 
                     selling_price: {
-                        required: true
+                        required: true,
+                        min:1
                     },
                 }
             })
+            let $table = $('#products-table');
+
+            let unitPrice = 0;
+
+            $table.on('click', '.sell-btn', function (e) {
+                const productId = $(this).data('id');
+                unitPrice = parseFloat($(this).data('price'));
+
+                $('#product_id').val(productId);
+                $('#quantity').val('');
+                $('#selling_price').val('');
+            });
+
+            $('#quantity').on('input', function () {
+                const quantity = parseInt($(this).val()) || 0;
+                const sellingPrice = (quantity * unitPrice);
+
+                $('#selling_price').val(sellingPrice);
+            });
         })
     </script>
 @endpush

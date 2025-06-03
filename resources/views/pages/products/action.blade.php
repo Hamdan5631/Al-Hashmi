@@ -23,7 +23,7 @@
 
 @if($admin->isEmployee() && $model->status != \App\Enums\ProductStatusEnum::OUT_OF_STOCK->value)
     <button type="button" class="btn btn-primary sell-btn" data-bs-toggle="modal"
-            data-bs-target="#quantityChange" data-id="{{$id}}">
+            data-bs-target="#quantityChange" data-id="{{$id}}" data-price="{{$sold_price}}">
         Sell
     </button>
 
